@@ -1,4 +1,4 @@
-# checkout_payment_ui
+# checkout_payment
 
 A new Flutter project.
 
