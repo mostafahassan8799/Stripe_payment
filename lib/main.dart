@@ -4,11 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(
-  DevicePreview(
-    enabled: !kReleaseMode,
-    builder: (context) => CheckoutApp(), // Wrap your app
-  ),
-);
+      DevicePreview(
+        enabled: !kReleaseMode,
+        builder: (context) => const CheckoutApp(), // Wrap your app
+      ),
+    );
 
 class CheckoutApp extends StatelessWidget {
   const CheckoutApp({super.key});
@@ -21,7 +21,11 @@ class CheckoutApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home:  MyCartView(),
+      home: const MyCartView(),
     );
   }
 }
+
+// paymentIntentObject creates a payment intent (amount, currency)
+// init payment sheet (paymentIntentClientSecret)
+// present PaymentSheet()
