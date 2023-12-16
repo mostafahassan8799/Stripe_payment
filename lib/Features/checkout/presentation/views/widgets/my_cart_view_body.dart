@@ -62,7 +62,7 @@ class MyCartViewBody extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16)),
                   builder: (context) {
-                    return  BlocProvider(
+                    return BlocProvider(
                       create: (context) => PaymentCubit(CheckoutRepoImpl()),
                       child: const PaymentMethodsBottomSheet(),
                     );

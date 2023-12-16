@@ -6,7 +6,8 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
     this.onTap,
-    required this.text,  this.isLoading = false,
+    required this.text,
+    this.isLoading = false,
   });
 
   final void Function()? onTap;
@@ -27,13 +28,13 @@ class CustomButton extends StatelessWidget {
           ),
         ),
         child: Center(
-          child: 
-          isLoading ? CircularProgressIndicator() :
-          Text(
-            text,
-            textAlign: TextAlign.center,
-            style: Styles.style22,
-          ),
+          child: isLoading
+              ? CircularProgressIndicator()
+              : Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  style: Styles.style22,
+                ),
         ),
       ),
     );

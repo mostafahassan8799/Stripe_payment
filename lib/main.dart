@@ -9,12 +9,12 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = ApiKeys.publishedKey;
   runApp(
-      DevicePreview(
-        enabled: !kReleaseMode,
-        builder: (context) => const CheckoutApp(), // Wrap your app
-      ),
-    );
-} 
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => const CheckoutApp(), // Wrap your app
+    ),
+  );
+}
 
 class CheckoutApp extends StatelessWidget {
   const CheckoutApp({super.key});
