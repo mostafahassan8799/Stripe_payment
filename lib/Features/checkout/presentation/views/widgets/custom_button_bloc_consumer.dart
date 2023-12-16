@@ -1,3 +1,8 @@
+import 'package:checkout_payment_ui/Features/checkout/data/models/amount_model/amount_model.dart';
+import 'package:checkout_payment_ui/Features/checkout/data/models/amount_model/details.dart';
+import 'package:checkout_payment_ui/Features/checkout/data/models/item_list_model/item.dart';
+import 'package:checkout_payment_ui/Features/checkout/data/models/item_list_model/item_list_model.dart';
+import 'package:checkout_payment_ui/Features/checkout/data/models/payment_intent_input_model.dart';
 import 'package:checkout_payment_ui/Features/checkout/presentation/manger/cubit/payment_cubit.dart';
 import 'package:checkout_payment_ui/Features/checkout/presentation/views/thank_you_view.dart';
 import 'package:checkout_payment_ui/core/widgets/custom_button.dart';
@@ -29,65 +34,85 @@ class CustomButtonBlocConsumer extends StatelessWidget {
       },
       builder: (context, state) {
         return CustomButton(
+            text: "Choose your payment method",
             onTap: () {
-              // PaymentIntentInputModel paymentIntentInputModel =
-              //     PaymentIntentInputModel(amount: '100', currency: 'USD');
-              // BlocProvider.of<PaymentCubit>(context).makePayment(
-              //     paymentIntentInputModel: paymentIntentInputModel);
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => PaypalCheckoutView(
-                  sandboxMode: true,
-                  clientId: "YOUR CLIENT ID",
-                  secretKey: "YOUR SECRET KEY",
-                  transactions: const [
-                    {
-                      "amount": {
-                        "total": '100',
-                        "currency": "USD",
-                        "details": {
-                          "subtotal": '100',
-                          "shipping": '0',
-                          "shipping_discount": 0
-                        }
-                      },
-                      "description": "The payment transaction description.",
-                      "item_list": {
-                        "items": [
-                          {
-                            "name": "Apple",
-                            "quantity": 4,
-                            "price": '10',
-                            "currency": "USD"
-                          },
-                          {
-                            "name": "Pineapple",
-                            "quantity": 5,
-                            "price": '12',
-                            "currency": "USD"
-                          }
-                        ],
-                      }
-                    }
-                  ],
-                  note: "Contact us for any questions on your order.",
-                  onSuccess: (Map params) async {
-                    print("onSuccess: $params");
-                    Navigator.pop(context);
-                  },
-                  onError: (error) {
-                    print("onError: $error");
-                    Navigator.pop(context);
-                  },
-                  onCancel: () {
-                    print('cancelled:');
-                    Navigator.pop(context);
-                  },
-                ),
-              ));
-            },
-            isLoading: state is PaymentLoading ? true : false,
-            text: 'Continue');
+              PaymentIntentInputModel paymentIntentInputModel =
+                  PaymentIntentInputModel(amount: '100', currency: 'USD');
+              BlocProvider.of<PaymentCubit>(context).makePayment(
+                  paymentIntentInputModel: paymentIntentInputModel);
+                  //TODO: When paypal is available
+            //  var transactionData = getTransActionData();
+            //   excutePaypalPayment(context, transactionData);
+            // },
+            // isLoading: state is PaymentLoading ? true : false,
+            // text: 'Continue');
+      
+        });
       },
     );
   }
+
+  void excutePaypalPayment(BuildContext context, ({AmountModel amount, ItemListModel itemList}) transactionData) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (BuildContext context) => PaypalCheckoutView(
+        sandboxMode: true,
+        clientId: "YOUR CLIENT ID", //replace with your client id 
+        secretKey: "YOUR SECRET KEY", //replace with your secret key
+        transactions: [
+          {
+            "amount": transactionData.amount.toJson(),
+            "description": "The payment transaction description.",
+            "item_list": {
+              "items": transactionData.itemList.toJson(),
+            }
+          }
+        ],
+        note: "Contact us for any questions on your order.",
+        onSuccess: (Map params) async {
+          print("onSuccess: $params");
+          Navigator.of(context)
+              .pushReplacement(MaterialPageRoute(builder: (context) {
+            return const ThankYouView();
+          }));
+        },
+        onError: (error) {
+          print("onError: $error");
+          Navigator.pop(context);
+        },
+        onCancel: () {
+          print('cancelled:');
+          Navigator.pop(context);
+        },
+      ),
+    ));
+  }
+({AmountModel amount, ItemListModel itemList}) getTransActionData(){
+   var amount = AmountModel(
+                total: "100",
+                currency: 'USD',
+                details: Details(
+                  shipping: "0",
+                  shippingDiscount: 0,
+                  subtotal: "100",
+                )
+              );
+              List<OrderItemModel> orders = [
+                OrderItemModel(
+                  currency: 'USD',
+                  name: 'Orange',
+                  price: '4',
+                  quantity: 10,
+                ),
+                OrderItemModel(
+                  currency: 'USD',
+                  name: 'Drinks',
+                  price: '5',
+                  quantity: 12,
+                ),
+              ];
+              var itemList = ItemListModel(orders: orders);
+              return(amount:amount,itemList:itemList);
+
+}
+
 }
