@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = ApiKeys.publishedKey;
   runApp(
       DevicePreview(

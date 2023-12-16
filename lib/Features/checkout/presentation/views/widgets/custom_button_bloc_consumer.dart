@@ -14,24 +14,29 @@ class CustomButtonBlocConsumer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<PaymentCubit, PaymentState>(
       listener: (context, state) {
-        if(state is PaymentSuccess){
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
+        if (state is PaymentSuccess) {
+          Navigator.of(context)
+              .pushReplacement(MaterialPageRoute(builder: (context) {
             return const ThankYouView();
           }));
         }
-        if(state is PaymentFailure){
+        if (state is PaymentFailure) {
+          Navigator.of(context).pop();
           SnackBar snackBar = SnackBar(content: Text(state.errMessage));
+          print("Erorr: " + state.errMessage);
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
       },
       builder: (context, state) {
         return CustomButton(
-          onTap: (){
-            PaymentIntentInputModel paymentIntentInputModel =PaymentIntentInputModel(amount: '100',currency: 'USD');
-            BlocProvider.of<PaymentCubit>(context).makePayment(paymentIntentInputModel: paymentIntentInputModel);
-          },
-          isLoading: state is PaymentLoading ? true : false,
-          text: 'Continue');
+            onTap: () {
+              PaymentIntentInputModel paymentIntentInputModel =
+                  PaymentIntentInputModel(amount: '100', currency: 'USD');
+              BlocProvider.of<PaymentCubit>(context).makePayment(
+                  paymentIntentInputModel: paymentIntentInputModel);
+            },
+            isLoading: state is PaymentLoading ? true : false,
+            text: 'Continue');
       },
     );
   }
