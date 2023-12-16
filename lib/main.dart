@@ -1,14 +1,19 @@
 import 'package:checkout_payment_ui/Features/checkout/presentation/views/my_cart_view.dart';
+import 'package:checkout_payment_ui/core/utils/api_keys.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
-void main() => runApp(
+void main() {
+  Stripe.publishableKey = ApiKeys.publishedKey;
+  runApp(
       DevicePreview(
         enabled: !kReleaseMode,
         builder: (context) => const CheckoutApp(), // Wrap your app
       ),
     );
+} 
 
 class CheckoutApp extends StatelessWidget {
   const CheckoutApp({super.key});
